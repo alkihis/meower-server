@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DB_NAME = 'meower';
+exports.PRIVATE_KEY_CERT = __dirname + '/../assets/key.pem';
+exports.USER_COLL = "users";
+exports.MEOWS_COLL = "meows";
+exports.FOLLOWERS_COLL = "followers";
+exports.FAV_COLL = "favs";
+exports.USERDATA_COLL = "logininfos";
+exports.TOKENS_COLL = "tokens";
+exports.USERNAME_REGEX = /^[a-z][a-z0-9_]{1,15}$/ui;
+exports.REALNAME_REGEX = /^[^\n<>\t\r]{1,32}$/u;
+exports.EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+exports.PASSWORD_REGEX = /.{8,}/;
+exports.BIO_LEN = 300;
+exports.PASSWORD_PASS_SALT_ROUNDS = 10;
+exports.EXPRESS_LOGGED_USER = 'logged_user';
