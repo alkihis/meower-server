@@ -18,7 +18,7 @@
     "commander": "^2.20.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "meower-interfaces": "^1.0.7",
+    "meower-interfaces": "^1.0.14",
     "mongodb": "^3.2.7",
     "multer": "^1.4.1",
     "simpleflakes": "^2.0.2"

@@ -9,4 +9,4 @@ commander_1.default
     .option("-p, --port <portNumber>", "The port number", parseInt, 3280)
     .option("-u, --url <url>", "The mongoDB server URL", "mongodb://localhost:3281")
     .parse(process.argv);
-index_1.default(commander_1.default.port, commander_1.default.url);
+index_1.default(commander_1.default.port);

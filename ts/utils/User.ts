@@ -4,9 +4,12 @@ import * as Meower from 'meower-interfaces';
 import Errors from "./Errors";
 import { UpdateOneOptions } from "mongodb";
 import { simpleflake as snowflake } from 'simpleflakes';
+import { DetailedRelationship } from "meower-interfaces/js/user";
 
 export class User {
     protected data: Meower.User;
+    protected followers: string[];
+    protected followings: string[];
 
     protected constructor(user_obj: Meower.User) {
         this.data = user_obj;
@@ -97,6 +100,10 @@ export class User {
     }
 
     static async partialToComplete(user: Meower.PartialUser) : Promise<Meower.User> {
+        if (user.created_at instanceof Date) {
+            user.created_at = user.created_at.toISOString();
+        }
+
         return Object.assign({
             followers_count: await this.getFollowerCountOf(user.id),
             followings_count: await this.getFollowingCountOf(user.id),
@@ -145,6 +152,10 @@ export class User {
     }
 
     static async follow(follower: string, followed: string) {
+        if (followed === follower) {
+            throw Errors.bad_follow;
+        }
+
         if (!(await this.isFollowing(follower, followed))) {
             const res = await Database.insertTo(FOLLOWERS_COLL, {
                 follower, followed, created_at: new Date
@@ -193,8 +204,51 @@ export class User {
         return undefined;
     }
 
+    static async getScreenNameFromId(id: string) {
+        const res = await Database.getOne(USER_COLL, {
+            id
+        });
+
+        if (res) {
+            return res.screen_name as string;
+        }
+        return undefined;
+    }
+
+    static getFollowersOf(id: string) {
+        return Database.get(FOLLOWERS_COLL, { follower: id }, undefined, true);
+    }
+
+    async getFollowers() {
+        if (!this.followers) {
+            const follows: DetailedRelationship[] = await User.getFollowersOf(this.id);
+
+            this.followers = follows.map(r => r.followed);
+        }
+
+        return this.followers;
+    }
+
+    static getFollowingsOf(id: string) {
+        return Database.get(FOLLOWERS_COLL, { followed: id }, undefined, true);
+    }
+
+    async getFollowings() {
+        if (!this.followings) {
+            const follows: DetailedRelationship[] = await User.getFollowingsOf(this.id);
+
+            this.followings = follows.map(r => r.follower);
+        }
+
+        return this.followings;
+    }
+
     toString() {
         return JSON.stringify(this.data);
+    }
+
+    get as_obj() {
+        return this.data;
     }
 
     get id() {
@@ -217,6 +271,24 @@ export class User {
         this.data.screen_name = v;
         // Mettre à jour la base
         this.update('screen_name', v);
+    }
+
+    get name() {
+        return this.data.name;
+    }
+
+    set name(v: string) {
+        if (!v.match(REALNAME_REGEX)) {
+            throw Errors.bad_name;
+        }
+
+        this.data.name = v;
+        // Mettre à jour la base
+        this.update('name', v);
+    }
+
+    get created_at() : string {
+        return this.data.created_at as string;
     }
 }
 

@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const simpleflakes_1 = require("simpleflakes");
 const Database_1 = __importDefault(require("../../utils/Database"));
-const index_1 = require("../../index");
 const constants_1 = require("../../utils/constants");
 const router = express_1.default.Router();
 router.post('/', async (req, res) => {
@@ -29,4 +28,4 @@ router.post('/', async (req, res) => {
         res.status(400).send();
     }
 });
-index_1.SERVER.use('/meows/send.json', router);
+exports.default = router;

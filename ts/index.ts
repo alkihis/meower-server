@@ -2,13 +2,14 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import Database from './utils/Database';
-import { MEOWS_COLL } from './utils/constants';
+import { MEOWS_COLL, DATABASE_URL } from './utils/constants';
 import { Long } from 'mongodb';
 import { login } from './helpers';
+import MainRouter from './endpoints/routes';
 
 export const SERVER = express();
 
-export default async function main(port: number, url: string) {
+export default async function main(port: number) {
     // Accept application/json, application/x-www-url-formencoded, multipart/form-data
     SERVER.use(express.json({ limit: 2048 * 1024 }));
     SERVER.use(bodyParser.urlencoded({ extended: true }));
@@ -16,7 +17,7 @@ export default async function main(port: number, url: string) {
 
     SERVER.use(login);
 
-    await Database.init(url);
+    await Database.init(DATABASE_URL);
 
     SERVER.get('/', async (_, res) => {
         // await Database.insertTo(MEOWS_COLL, {
@@ -35,6 +36,9 @@ export default async function main(port: number, url: string) {
 
         res.json({ hello: true });
     });
+
+    //// GLOBAL ROUTER
+    SERVER.use(MainRouter);
     
     SERVER.listen(port, () => {
         console.log(`Server is listening on port ${port}.`);

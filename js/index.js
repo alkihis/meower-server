@@ -10,14 +10,15 @@ const Database_1 = __importDefault(require("./utils/Database"));
 const constants_1 = require("./utils/constants");
 const mongodb_1 = require("mongodb");
 const helpers_1 = require("./helpers");
+const routes_1 = __importDefault(require("./endpoints/routes"));
 exports.SERVER = express_1.default();
-async function main(port, url) {
+async function main(port) {
     // Accept application/json, application/x-www-url-formencoded, multipart/form-data
     exports.SERVER.use(express_1.default.json({ limit: 2048 * 1024 }));
     exports.SERVER.use(body_parser_1.default.urlencoded({ extended: true }));
     exports.SERVER.use(multer_1.default().none());
     exports.SERVER.use(helpers_1.login);
-    await Database_1.default.init(url);
+    await Database_1.default.init(constants_1.DATABASE_URL);
     exports.SERVER.get('/', async (_, res) => {
         // await Database.insertTo(MEOWS_COLL, {
         //     id: Long.fromString("9007199254740993"),
@@ -30,6 +31,8 @@ async function main(port, url) {
         console.log(await Database_1.default.get(constants_1.MEOWS_COLL, { id: { $gt: 5 } }), await Database_1.default.get(constants_1.MEOWS_COLL, { id: { $gt: mongodb_1.Long.fromString("5") } }), await Database_1.default.get(constants_1.MEOWS_COLL, { id: "6" }));
         res.json({ hello: true });
     });
+    //// GLOBAL ROUTER
+    exports.SERVER.use(routes_1.default);
     exports.SERVER.listen(port, () => {
         console.log(`Server is listening on port ${port}.`);
     });

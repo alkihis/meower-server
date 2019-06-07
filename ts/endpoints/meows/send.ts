@@ -1,9 +1,7 @@
 import Express from 'express';
 import { simpleflake as snowflake } from 'simpleflakes';
 import Database from '../../utils/Database';
-import { SERVER } from '../../index';
 import { MEOWS_COLL } from '../../utils/constants';
-import { login } from '../../helpers';
 
 const router = Express.Router();
 
@@ -30,4 +28,4 @@ router.post('/', async (req, res) => {
     }        
 });
 
-SERVER.use('/meows/send.json', router);
+export default router;

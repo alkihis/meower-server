@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DB_NAME = 'meower';
 exports.PRIVATE_KEY_CERT = __dirname + '/../assets/key.pem';
+exports.DATABASE_URL = "mongodb://localhost:3281";
 exports.USER_COLL = "users";
 exports.MEOWS_COLL = "meows";
 exports.FOLLOWERS_COLL = "followers";
@@ -11,6 +12,9 @@ exports.TOKENS_COLL = "tokens";
 exports.USERNAME_REGEX = /^[a-z][a-z0-9_]{1,15}$/ui;
 exports.REALNAME_REGEX = /^[^\n<>\t\r]{1,32}$/u;
 exports.EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+exports.URL_REGEX = /(https?)?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
+exports.MENTIONS_REGEX = /(?<=^|\W)@([a-z][a-z0-9_]{1,15})\b/gi;
+exports.HASHTAG_REGEX = /(?<=^|\W)#([a-z][a-z0-9_]{0,31})/gi;
 exports.PASSWORD_REGEX = /.{8,}/;
 exports.BIO_LEN = 300;
 exports.PASSWORD_PASS_SALT_ROUNDS = 10;

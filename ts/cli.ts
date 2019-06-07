@@ -6,5 +6,5 @@ commander
     .option("-u, --url <url>", "The mongoDB server URL", "mongodb://localhost:3281")
 .parse(process.argv);
 
-index(commander.port, commander.url);
+index(commander.port);
 
